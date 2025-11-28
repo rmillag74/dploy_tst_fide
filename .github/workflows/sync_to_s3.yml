@@ -1,0 +1,30 @@
+    name: Sync to S3
+
+    on:
+      push:
+        branches:
+          - main # Or your desired branch
+
+    jobs:
+      sync:
+        runs-on: windows-latest
+        steps:
+          - name: Checkout Repository
+            uses: actions/checkout@v3
+
+          - name: Configure AWS Credentials
+            uses: aws-actions/configure-aws-credentials@v2
+            with:
+              role-session-name: awssyncsession
+              role-to-assume: ${{ secrets.AWS_REGION }}
+              #aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              aws-region: ${{ secrets.AWS_REGION }}
+
+          - name: Sync files to S3
+            run: aws s3 sync . s3://${{ secrets.AWS_S3_BUCKET }} --delete --exclude ".git/*" --exclude ".github/*"
+            # Adjust the 'aws s3 sync' command with desired options:
+            # - '.' specifies the local directory to sync (current working directory)
+            # - 's3://${{ secrets.AWS_S3_BUCKET }}' specifies the target S3 bucket
+            # - '--delete' removes files in S3 that are not present locally
+            # - '--exclude' allows excluding specific files or directories
