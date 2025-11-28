@@ -1,0 +1,14 @@
+    name: Hello World CI
+
+    on: [push] # This workflow runs on every push to the repository
+
+    jobs:
+      build-and-greet:
+        runs-on: windows-latest # Specify the operating system for the job
+
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4 # Action to check out your repository code
+
+          - name: Say Hello
+            run: echo "Hello, Elektra USA CI/CD World!" # Command to execute
