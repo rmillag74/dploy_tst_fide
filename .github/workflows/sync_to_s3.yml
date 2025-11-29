@@ -23,6 +23,7 @@
 
           - name: Sync files to S3
             run: aws s3 sync . s3://${{ secrets.AWS_S3_BUCKET }} --delete --exclude ".git/*" --exclude ".github/*"
+            #
             # Adjust the 'aws s3 sync' command with desired options:
             # - '.' specifies the local directory to sync (current working directory)
             # - 's3://${{ secrets.AWS_S3_BUCKET }}' specifies the target S3 bucket
